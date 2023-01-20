@@ -1,0 +1,24 @@
+{
+  "name": "gamedata",
+  "version": "1.0.0",
+  "description": "sync gamedata files to github",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scuba75/gamedata.git"
+  },
+  "author": "scuba",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scuba75/gamedata/issues"
+  },
+  "homepage": "https://github.com/scuba75/gamedata#readme",
+  "dependencies": {
+    "@swgoh-utils/comlink": "^1.2.4",
+    "jszip": "^3.10.1",
+    "node-fetch": "^2.6.7"
+  }
+}
