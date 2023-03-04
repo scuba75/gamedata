@@ -47,7 +47,7 @@ const CheckVersions = async()=>{
     if(metaData?.latestGamedataVersion && metaData?.latestLocalizationBundleVersion){
       if(metaData.latestGamedataVersion !== gameVersions.gameVersion || metaData?.latestLocalizationBundleVersion !== gameVersions.localeVersion){
         let tempObj = await UpdateGitHubFiles(metaData.latestGamedataVersion, metaData.latestLocalizationBundleVersion, JSON.parse(JSON.stringify(gameVersions)))
-        if(tempObj?.gameVersion && gameVersions.localeVersion) gameVersions = tempObj
+        if(tempObj?.gameVersion && tempObj?.localeVersion) gameVersions = tempObj
       }
     }
   }catch(e){

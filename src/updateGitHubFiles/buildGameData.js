@@ -419,6 +419,7 @@ module.exports = async(version, versionObj = {}, files)=>{
         versionObj['gameData.json'] = version;
         console.log('Uploaded gameData.json to github')
       }else{
+        if(!versionObj['gameData.json']) versionObj['gameData.json'] = 'failed';
         console.log('Error uploading gameData.json to github ...')
       }
     }

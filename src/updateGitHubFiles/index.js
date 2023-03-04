@@ -38,6 +38,11 @@ module.exports = async(gameVersion, localeVersion, versionObj = {})=>{
       }
       //console.log(tempVersion)
       return JSON.parse(JSON.stringify(tempVersion))
+    }else{
+      tempVersion.gameVersion = versionObj.gameVersion
+      tempVersion.localeVersion = versionObj.localeVersion
+      console.error('Error saving all files to gitHub')
+      return JSON.parse(JSON.stringify(tempVersion))
     }
   }catch(e){
     console.error(e);

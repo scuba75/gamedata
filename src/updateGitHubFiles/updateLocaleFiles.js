@@ -66,17 +66,14 @@ module.exports = async(localeVersion, versionObj = {}, files)=>{
             tempVersion[lang+'.json'] = localeVersion;
             uploadCount++
           }else{
+            if(!tempVersion[lang+'.json']) tempVersion[lang+'.json'] = 'failed'
             console.log('Error uploading '+lang+'.json to github ...')
           }
         }
       }
     }
     console.log('Uploaded '+uploadCount+'/'+fileCount+' locale files github ...')
-    if(Object.values(tempVersion)?.filter(x=>x === localeVersion).length === fileCount){
-      return tempVersion
-    }else{
-      return JSON.parse(JSON.stringify(versionObj))
-    }
+    return JSON.parse(JSON.stringify(tempVersion))
   }catch(e){
     console.error(e);
   }

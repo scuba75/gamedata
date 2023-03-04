@@ -35,6 +35,7 @@ module.exports = async(gameVersion, versionObj = {}, files)=>{
           uploadCount++
           tempVersion['enums.json'] = gameVersion;
         }else{
+          if(!tempVersion['enums.json']) tempVersion['enums.json'] = 'failed'
           console.log('Error uploading enums.json to github ...')
         }
       }
@@ -46,6 +47,29 @@ module.exports = async(gameVersion, versionObj = {}, files)=>{
               fileNames.push(j)
               if(gameDataFilesNeeded.filter(x=>x === j).length > 0) await SaveFile2Dir({version: gameVersion, data: dataFiles[j]}, j+'.json', gameVersion)
               if(j === 'units'){
+                fileCount++
+                if(tempVersion['units.json'] !== gameVersion){
+                  let units1 = await SaveFile2GitHub({version: gameVersion, data: dataFiles[j].filter(x=>x.obtainable === true && x.obtainableTime === "0")}, 'units.json', commitMsg, files?.find(x=>x.name === 'units.json')?.sha)
+                  if(units1?.content?.sha){
+                    tempVersion['units.json'] = gameVersion;
+                    uploadCount++;
+                  }else{
+                    if(!tempVersion['units.json']) tempVersion['units.json'] = 'failed'
+                    console.error('error uploading units.json to github ...')
+                  }
+                }
+                fileCount++
+                if(tempVersion['units_pve.json'] !== gameVersion){
+                  let units2 = await SaveFile2GitHub({version: gameVersion, data: dataFiles[j].filter(x=>x.obtainable !== true || x.obtainableTime !== "0")}, 'units_pve.json', commitMsg, files?.find(x=>x.name === 'units_pve.json')?.sha)
+                  if(units2?.content?.sha){
+                    tempVersion['units_pve.json'] = gameVersion;
+                    uploadCount++;
+                  }else{
+                    if(!tempVersion['units_pve.json']) tempVersion['units_pve.json'] = 'failed'
+                    console.error('error uploading units_pve.json to github ...')
+                  }
+                }
+
 
               }else{
                 fileCount++;
@@ -56,6 +80,7 @@ module.exports = async(gameVersion, versionObj = {}, files)=>{
                     tempVersion[j+'.json'] = gameVersion;
                     uploadCount++;
                   }else{
+                    if(!tempVersion[j+'.json']) tempVersion[j+'.json'] = 'failed'
                     console.error('error uploading '+j+'.json to github ...')
                   }
                 }
@@ -67,11 +92,8 @@ module.exports = async(gameVersion, versionObj = {}, files)=>{
       }
       console.log('Uploaded '+uploadCount+'/'+fileCount+' gameData files github ...')
     }
-    if(Object.values(tempVersion)?.filter(x=>x === gameVersion).length === fileCount){
-      return tempVersion
-    }else{
-      return JSON.parse(JSON.stringify(versionObj))
-    }
+    return JSON.parse(JSON.stringify(tempVersion))
+    
   }catch(e){
     console.error(e);
   }
