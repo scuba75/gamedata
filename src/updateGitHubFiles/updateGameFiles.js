@@ -45,7 +45,7 @@ module.exports = async(gameVersion, versionObj = {}, files)=>{
           for(let j in dataFiles){
             if(dataFiles[j] && dataFiles[j].length > 0 && fileNames.filter(x=>x === j).length === 0){
               fileNames.push(j)
-              if(gameDataFilesNeeded.filter(x=>x === j).length > 0) await SaveFile2Dir({version: gameVersion, data: dataFiles[j]}, j+'.json', gameVersion)
+              await SaveFile2Dir({version: gameVersion, data: dataFiles[j]}, j+'.json', gameVersion)
               if(j === 'units'){
                 fileCount++
                 if(tempVersion['units.json'] !== gameVersion){
@@ -93,7 +93,7 @@ module.exports = async(gameVersion, versionObj = {}, files)=>{
       console.log('Uploaded '+uploadCount+'/'+fileCount+' gameData files github ...')
     }
     return JSON.parse(JSON.stringify(tempVersion))
-    
+
   }catch(e){
     console.error(e);
   }
